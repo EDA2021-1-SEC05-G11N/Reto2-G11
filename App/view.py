@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -51,9 +52,18 @@ while True:
         print("Cargando información en el catalogo ....")
         catalog = controller.initCatalog()
         controller.cargarinfocatalogo(catalog)
-    elif int(inputs[0]) == 2:
-        pass
+        print("Se cargó la información al catalogo")
+        print("Categorias cargadas: " + str(controller.sizecategorias(catalog)))
+        #print("Videos cargados: " + str(controller.sizevideos(catalog)))
+        #a = catalog["videos_por_categoria"]
+        #print(mp.get(a, "music"))
 
+    elif int(inputs[0]) == 2:
+        categoria = input("Ingrese la categoria que desea consultar: ")
+        numero = int(input("Ingrese el numero de videos que desea consultar: "))
+        videos = controller.videos_likes_categoria(catalog, categoria, numero)
+        print("La información de los  " + str(numero) + " videos con mas likes para la categoria " + categoria + " es: ")
+        print(videos)
     else:
         sys.exit(0)
 sys.exit(0)

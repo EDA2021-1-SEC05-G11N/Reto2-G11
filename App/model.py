@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import quicksort as qu
 assert cf
 
 """
@@ -39,7 +40,7 @@ los mismos.
 
 # Construccion de modelos
 def initCatalog():
-    catalog = {"categorias": None
+    catalog = {"categorias": None,
                 "videos_por_categoria": None}
 
     catalog["categorias"]=lt.newList(datastructure='ARRAY_LIST')
@@ -63,14 +64,12 @@ def addvideo(catalog, video):
     else:
         videos = newcategory(categoria)
         mp.put(c, categoria, videos)
-    lt.addLast(videos['videos'], video)
+    lt.addLast(videos, video)
 
 # Funciones para creacion de datos
 def newcategory(categoria):
-    entrada = {'categoria': "", "videos": None}
-    entrada['categoria'] = categoria
-    entrada['videos'] = lt.newList(datastructure='ARRAY_LIST')
-    return entrada
+    videos = lt.newList(datastructure='ARRAY_LIST')
+    return videos
 
 # Funciones de consulta
 def nombrecategoria(catalog, idcategoria):
@@ -78,8 +77,47 @@ def nombrecategoria(catalog, idcategoria):
     for i in range(lt.size(categorias)):
         a = lt.getElement(categorias,i)
         if idcategoria == a["id"]:
-            return a["name"]
+            nombre = a["name"].replace(" ", "")
+            return nombre.lower()
+
+def sizecategorias(catalog):
+    return lt.size(catalog["categorias"])
+
+def sizevideos(catalog):
+    contador = 0
+    mapa = catalog["videos_por_categoria"]
+    llaves = mp.keySet(mapa)
+    for i in llaves:
+        entrada = mp.get(mapa, i)
+        videos = me.getValue(entrada)
+        tamanio = lt.size(videos)
+        contador+=tamanio
+    return contador
+
+def videos_likes_categoria(catalog, nombrecategoria, numero):
+    nombrecategoria = nombrecategoria.replace(" ", "").lower()
+    categoria = mp.get(catalog['videos_por_categoria'], nombrecategoria)
+    videos = me.getValue(categoria)
+    videos_ordenados = sortVideos(videos, comparelikes)
+
+    lista_respuesta=[]
+    for i in range(1, numero + 1):
+            video = lt.getElement(videos_ordenados, i)
+            lista_respuesta.append(video)
+
+    return lista_respuesta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
-
+def comparelikes(video1, video2):
+     if int(video1["likes"]) > int(video2["likes"]):
+        return True
+     else:
+        return False 
 # Funciones de ordenamiento
+def sortVideos(lista, comparacion):
+    sorted_list = qu.sort(lista, comparacion)
+    return sorted_list
+
+
+
+
