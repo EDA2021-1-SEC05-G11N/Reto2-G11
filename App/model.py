@@ -38,12 +38,47 @@ los mismos.
 """
 
 # Construccion de modelos
+def initCatalog():
+    catalog = {"categorias": None
+                "videos_por_categoria": None}
+
+    catalog["categorias"]=lt.newList(datastructure='ARRAY_LIST')
+    catalog["videos_por_categoria"]= mp.newMap(30,
+                                            maptype='PROBING',
+                                            loadfactor=0.5)
+
+    return catalog
 
 # Funciones para agregar informacion al catalogo
+def addcategory(catalog, categoria):
+    lt.addLast(catalog["categorias"], categoria)
+
+def addvideo(catalog, video):
+    c = catalog['videos_por_categoria']
+    categoria = nombrecategoria(catalog, video["category_id"])
+    existecategoria = mp.contains(c, categoria)
+    if existecategoria:
+        entrada = mp.get(c, categoria)
+        videos = me.getValue(entrada)
+    else:
+        videos = newcategory(categoria)
+        mp.put(c, categoria, videos)
+    lt.addLast(videos['videos'], video)
 
 # Funciones para creacion de datos
+def newcategory(categoria):
+    entrada = {'categoria': "", "videos": None}
+    entrada['categoria'] = categoria
+    entrada['videos'] = lt.newList(datastructure='ARRAY_LIST')
+    return entrada
 
 # Funciones de consulta
+def nombrecategoria(catalog, idcategoria):
+    categorias = catalog["categorias"]
+    for i in range(lt.size(categorias)):
+        a = lt.getElement(categorias,i)
+        if idcategoria == a["id"]:
+            return a["name"]
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 

@@ -37,7 +37,7 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Videos con mas likes por categoria")
 
 catalog = None
 
@@ -48,8 +48,9 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
-
+        print("Cargando información en el catalogo ....")
+        catalog = controller.initCatalog()
+        controller.cargarinfocatalogo(catalog)
     elif int(inputs[0]) == 2:
         pass
 
