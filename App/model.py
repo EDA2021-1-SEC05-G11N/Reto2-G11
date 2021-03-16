@@ -84,6 +84,7 @@ def nombrecategoria(catalog, idcategoria):
 def sizecategorias(catalog):
     return lt.size(catalog["categorias"])
 
+#Funcion Req Lab 6
 def videos_likes_categoria(catalog, nombrecategoria, numero):
     nombrecategoria = nombrecategoria.replace(" ", "").lower()
     categoria = mp.get(catalog['videos_por_categoria'], nombrecategoria)
@@ -117,6 +118,105 @@ def comparecategories(llave, categoria):
 def sortVideos(lista, comparacion):
     sorted_list = qu.sort(lista, comparacion)
     return sorted_list
+
+#funcion requerimiento 1
+def videos_categoria_pais(catalog, categoria, pais, numero):
+    videos = sortVideos(catalog["videos"], "None", 4, cmpviews)
+    categoria = categorias(catalog,categoria)
+    lista_videos = lt.newList(datastructure='ARRAY_LIST')
+
+    for i in range(1, lt.size(videos)):
+        video = lt.getElement(videos, i)
+        if video["category_id"] == categoria:
+            if video["country"].lower() == pais.lower():
+                if numero > 0:
+                    vid_t = {"Nombre del video": video["title"], "Trending date": video["trending_date"],
+                        "Nombre del canal": video["channel_title"], "Fecha Publicación": video["publish_time"],
+                        "Reproducciones": video["views"], "Likes": video["likes"], "Dislikes": video["dislikes"]}
+                    lt.addLast(lista_videos, vid_t)
+                    numero-=1
+                elif numero == 0:
+                    break
+                    
+    return lista_videos
+
+#funcion requerimiento 2
+def video_tendencia_pais(catalog, pais):
+    videos_pais = {}
+    tendencia_videos = {}
+    for i in range(1, lt.size(catalog["videos"])):   
+        video = lt.getElement(catalog["videos"], i)
+        if video["country"].lower() == pais.lower():
+            if video["video_id"] in tendencia_videos:
+                tendencia_videos[video["video_id"]] = tendencia_videos[video["video_id"]] + 1
+            else:
+                tendencia_videos[video["video_id"]] = 1
+                videos_pais[video["video_id"]]= video
+
+    mas_dias = 0
+    video = {}
+    for i in tendencia_videos:
+        if tendencia_videos[i] > mas_dias:
+            mas_dias = tendencia_videos[i]
+            video = videos_pais[i]
+
+    video["Dias Tendencia"] = mas_dias
+    return video
+
+#funcion requerimiento 3
+def video_tendencia_categoria(catalog, categoria):
+    idcategoria = categorias(catalog, categoria)
+    categoria_veces={}
+    categoria_p1={}
+    mayor=0
+    respuesta =""
+    entregar = ""
+
+    for i in range(lt.size(catalog["videos"])):
+        objeto=lt.getElement(catalog["videos"],i)
+        if objeto["category_id"] == idcategoria:
+            if objeto["video_id"] in categoria_veces:
+                categoria_veces[objeto["video_id"]]=categoria_veces[objeto["video_id"]]+1
+            else:
+                categoria_veces[objeto["video_id"]]=1
+                categoria_p1[objeto["video_id"]]=objeto
+
+    for o in categoria_veces:
+        if categoria_veces[o] > mayor:
+            mayor=categoria_veces[o]
+            respuesta=(o,categoria_veces[o])
+    for h in categoria_p1:
+        if respuesta[0] == h:
+            entregar=categoria_p1[h]
+            break
+
+    return  (entregar["title"], entregar["channel_title"],entregar["category_id"], mayor)
+
+#funcion requerimiento 4
+def videos_likes(catalog, pais, tag, numero):
+    videos_pais = lt.newList(datastructure="ARRAY_LIST")
+
+    for i in range(1, lt.size(catalog["videos"])):
+        video = lt.getElement(catalog["videos"], i)
+        if video["country"].lower() == pais.lower():
+            lista_tag = video["tags"]
+            for e in range(len(lista_tag)):
+                if tag in lista_tag[e]:
+                    lt.addLast(videos_pais,video)
+
+    videos = sortVideos(videos_pais, "None", 4, comparelikes)
+    vids = lt.subList(videos, 1, numero)
+    respuesta = lt.newList()
+
+    for i in range(1, lt.size(vids)):
+        video = lt.getElement(vids, i)
+        vid_t = {"Nombre del video": video["title"], "Nombre del canal": video["channel_title"],
+                "Fecha Publicación": video["publish_time"],"Reproducciones": video["views"], 
+                        "Likes": video["likes"], "Dislikes": video["dislikes"], "Tags": video["tags"]}
+        lt.addLast(respuesta, vid_t)
+
+    return respuesta
+
 
 
 

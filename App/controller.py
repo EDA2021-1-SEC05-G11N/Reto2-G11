@@ -52,12 +52,28 @@ def cargarcategorias(catalog):
     input_file = csv.DictReader(open(cfile, encoding='utf-8'), delimiter = "\t")
     for categoria in input_file:
         model.addcategory(catalog, categoria)
-# Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def sizecategorias(catalog):
+    return model.sizecategorias(catalog)
+
+#Funcion Req Lab 6
 def videos_likes_categoria(catalog, categoria, numero):
     v = model.videos_likes_categoria(catalog, categoria, numero)
     return v
 
-def sizecategorias(catalog):
-    return model.sizecategorias(catalog)
+# Funcion requerimiento 1
+def videos_categoria_pais(catalog, categoria, pais, numero):
+    return model.videos_categoria_pais(catalog, categoria, pais, numero)
+
+#funcion requerimiento 2
+def video_trending(catalog,pais):
+    return model.video_tendencia_pais(catalog,pais)
+
+#funcion requerimiento 3
+def video_categoria(catalog,categoria):
+    return model.video_tendencia_categoria(catalog,categoria)
+
+#funcion requerimiento 4
+def videos_likes(catalog, pais, tag, numero):
+    return model.videos_likes(catalog, pais, tag, numero)
