@@ -61,6 +61,3 @@ def videos_likes_categoria(catalog, categoria, numero):
 
 def sizecategorias(catalog):
     return model.sizecategorias(catalog)
-
-def sizevideos(catalog):
-    return model.sizevideos(catalog)

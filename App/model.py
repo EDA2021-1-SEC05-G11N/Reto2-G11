@@ -44,9 +44,10 @@ def initCatalog():
                 "videos_por_categoria": None}
 
     catalog["categorias"]=lt.newList(datastructure='ARRAY_LIST')
-    catalog["videos_por_categoria"]= mp.newMap(30,
+    catalog["videos_por_categoria"]= mp.newMap(32,
                                             maptype='PROBING',
-                                            loadfactor=0.5)
+                                            loadfactor=0.5,
+                                            comparefunction=comparecategories)
 
     return catalog
 
@@ -83,17 +84,6 @@ def nombrecategoria(catalog, idcategoria):
 def sizecategorias(catalog):
     return lt.size(catalog["categorias"])
 
-def sizevideos(catalog):
-    contador = 0
-    mapa = catalog["videos_por_categoria"]
-    llaves = mp.keySet(mapa)
-    for i in llaves:
-        entrada = mp.get(mapa, i)
-        videos = me.getValue(entrada)
-        tamanio = lt.size(videos)
-        contador+=tamanio
-    return contador
-
 def videos_likes_categoria(catalog, nombrecategoria, numero):
     nombrecategoria = nombrecategoria.replace(" ", "").lower()
     categoria = mp.get(catalog['videos_por_categoria'], nombrecategoria)
@@ -113,6 +103,16 @@ def comparelikes(video1, video2):
         return True
      else:
         return False 
+
+def comparecategories(llave, categoria):
+    entry = me.getKey(categoria)
+    if (llave == entry):
+        return 0
+    elif (llave > entry):
+        return 1
+    else:
+        return -1
+
 # Funciones de ordenamiento
 def sortVideos(lista, comparacion):
     sorted_list = qu.sort(lista, comparacion)
