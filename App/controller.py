@@ -40,7 +40,7 @@ def cargarinfocatalogo(catalog):
     cargardatos(catalog)
 
 def cargardatos(catalog):
-    vfile = cf.data_dir + 'videos/videos-small.csv'
+    vfile = cf.data_dir + 'videos/videos-50pct.csv'
     input_file = csv.DictReader(open(vfile, encoding='utf-8'))
     for video in input_file:
         tags = video["tags"].split("|")

@@ -239,7 +239,7 @@ def videos_likes(catalog, pais, tag, numero):
                 lt.addLast(videos_tag,video)
 
     videos = sortVideos(videos_tag, comparelikes)
-    vids = lt.subList(videos, 1, numero)
+    vids = lt.subList(videos, 1, numero + 1)
     respuesta = []
 
     for i in range(1, lt.size(vids)):
