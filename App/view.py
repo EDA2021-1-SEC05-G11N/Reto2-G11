@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+import time
 import config as cf
 import sys
 import controller
@@ -96,8 +97,12 @@ while True:
     elif int(inputs[0]) == 5:
         t1 = time.process_time()
         categoria = input("Ingrese la categoria que desea consultar: ")
-        final = controller.video_categoria(catalog,categoria)
-        print("El titulo del video  que mas dias ha sido trending en la categoria {0} (id de la categoria es {1}) fue {2} y su canal fue {3} con el total de {4} dias".format(categoria, final[2],final[0],final[1],final[3]))
+        video = controller.video_categoria(catalog,categoria)
+        nombre = video["title"]
+        canal = video["channel_title"]
+        dias = video["Dias Tendencia"]
+        id_categoria = video["category_id"]
+        print(("El titulo del video con mas dias como tendendia en {0} es {1} el nombre del canal es {2}, su identificador es {3} y fue tendencia por {4} dias.").format(categoria, nombre, canal, id_categoria, dias))
         print("Se ejecutó el requerimiento 3")
         t2 = time.process_time()
         print("El tiempo de ejecución fue de " + str(t2-t1) + " segundos")
