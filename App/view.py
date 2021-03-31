@@ -20,7 +20,6 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
-import time
 import config as cf
 import sys
 import controller
@@ -76,13 +75,8 @@ while True:
         pais = input("Ingrese el pais que desea consultar: ")
         categoria = input("Ingrese la categoria que desea consultar: ")
         numero = int(input("Ingrese el numero de videos que desea visualizar:"))
-        videos = controller.videos_categoria_pais(catalog, categoria, pais, numero)
-        print("\n Los " + str(numero) +  " videos con mas dias como tendendia en " + pais + " para la categoria " + categoria + " son:\n")
-        for i in range(0, len(videos)):
-            video = videos[i]
-            print("El " + str(i + 1) + " video que cumple con estas características es: " + str(video["Nombre del video"] + "."))
-            print("A continuación encontrará información mas detallada de este.\n")
-            print(str(video)+"\n")
+        print("El video con mas dias como tendendia en " + pais + " para la categoria " + categoria + " es:")
+        print(controller.videos_categoria_pais(catalog, categoria, pais, numero))
         print("Se ejecutó el requerimiento 3")
         t2 = time.process_time()
         print("El tiempo de ejecución fue de " + str(t2-t1) + " segundos")
@@ -102,12 +96,8 @@ while True:
     elif int(inputs[0]) == 5:
         t1 = time.process_time()
         categoria = input("Ingrese la categoria que desea consultar: ")
-        video = controller.video_categoria(catalog,categoria)
-        nombre = video["title"]
-        canal = video["channel_title"]
-        dias = video["Dias Tendencia"]
-        id_categoria = video["category_id"]
-        print(("El titulo del video con mas dias como tendendia en {0} es {1} el nombre del canal es {2}, su identificador es {3} y fue tendencia por {4} dias.").format(categoria, nombre, canal, id_categoria, dias))
+        final = controller.video_categoria(catalog,categoria)
+        print("El titulo del video  que mas dias ha sido trending en la categoria {0} (id de la categoria es {1}) fue {2} y su canal fue {3} con el total de {4} dias".format(categoria, final[2],final[0],final[1],final[3]))
         print("Se ejecutó el requerimiento 3")
         t2 = time.process_time()
         print("El tiempo de ejecución fue de " + str(t2-t1) + " segundos")
@@ -117,14 +107,8 @@ while True:
         pais = input("Ingrese el pais que desea consultar: ")
         tag = input("Ingrese el tag que desea consultar: ")
         numero = int(input("Ingrese el numero de videos que desea visualizar:"))
-        videos = controller.videos_likes(catalog, pais, tag, numero)
-        print(videos)
-        print("\nLos videos " + str(numero) + " con mas likes para " + pais + " con el tag " + tag + " son:")
-        for i in range(0, len(videos)):
-            video = videos[i]
-            print("El " + str(i + 1) + " video que cumple con estas características es: " + str(video["Nombre del video"] + "."))
-            print("A continuación encontrará información mas detallada de este.\n")
-            print(str(video)+"\n")
+        print("Los videos con mas likes para " + pais + " con el tag " + tag + " son:")
+        print(controller.videos_likes(catalog, pais, tag, numero))
         print("Se ejecutó el requerimiento 4")
         t2 = time.process_time()
         print("El tiempo de ejecución fue de " + str(t2-t1) + " segundos")
