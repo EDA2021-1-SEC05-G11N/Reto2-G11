@@ -43,18 +43,21 @@ def cargarinfocatalogo(catalog):
     tracemalloc.start()
     start_time = getTime()
     start_memory = getMemory()
-    cargar
+
     cargarcategorias(catalog)
     cargardatos(catalog)
     
     stop_memory = getMemory()
     stop_time = getTime()
     tracemalloc.stop()
+    print("que pasa")
+    print(stop_time)
+    print(start_time)
 
     delta_time = stop_time - start_time
     delta_memory = deltaMemory(start_memory, stop_memory)
 
-    return (delta_time, delta_memory)
+    return delta_time, delta_memory
 
 def cargardatos(catalog):
     vfile = cf.data_dir + 'videos/videos-50pct.csv'
@@ -64,12 +67,11 @@ def cargardatos(catalog):
         video["tags"] = tags
         model.addvideo(catalog, video)
 
-    def cargarcategorias(catalog):
-        
-        cfile = cf.data_dir + 'videos/category-id.csv'
-        input_file = csv.DictReader(open(cfile, encoding='utf-8'), delimiter = "\t")
-        for categoria in input_file:
-            model.addcategory(catalog, categoria)
+def cargarcategorias(catalog):
+    cfile = cf.data_dir + 'videos/category-id.csv'
+    input_file = csv.DictReader(open(cfile, encoding='utf-8'), delimiter = "\t")
+    for categoria in input_file:
+        model.addcategory(catalog, categoria)
 
 # Funciones de consulta sobre el catálogo
 def sizecategorias(catalog):
