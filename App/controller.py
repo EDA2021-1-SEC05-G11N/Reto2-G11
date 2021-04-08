@@ -50,9 +50,6 @@ def cargarinfocatalogo(catalog):
     stop_memory = getMemory()
     stop_time = getTime()
     tracemalloc.stop()
-    print("que pasa")
-    print(stop_time)
-    print(start_time)
 
     delta_time = stop_time - start_time
     delta_memory = deltaMemory(start_memory, stop_memory)

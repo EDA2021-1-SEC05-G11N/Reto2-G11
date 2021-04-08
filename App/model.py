@@ -45,10 +45,10 @@ def initCatalog():
 
     catalog["categorias"]=lt.newList(datastructure='ARRAY_LIST')
     catalog["videos_por_categoria"]= mp.newMap(32,
-                                            maptype='PROBING',
-                                            loadfactor=0.5,
+                                            maptype='CHAINING',
+                                            loadfactor=10,
                                             comparefunction=comparecategories)
-
+    print("q")
     return catalog
 
 # Funciones para agregar informacion al catalogo
